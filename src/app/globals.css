@@ -24,3 +24,63 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@font-face {
+	font-family: 'weddingScriptFont';
+	src: url('/media/fonts/wedding_script/Wedding.eot');
+	src: local('☺'), url('/media/fonts/wedding_script/Wedding.woff') format('woff'), url('/media/fonts/wedding_script/Wedding.ttf') format('truetype'), url('/media/fonts/wedding_script/Wedding.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'weddingStarlightFont';
+    src: url('/media/fonts/wedding_in_the_starlight/Wedding in the Starlight.ttf') format('truetype');
+}
+
+
+
+header {
+	
+	text-align: center;
+	width: 100%;
+	height: auto;
+	background-size: cover;
+	background-attachment: fixed;
+	position: relative;
+	overflow: hidden;
+    margin-top: 60px;
+	/* border-radius: 0 0 85% 85% / 30%; */
+}
+header .overlay{
+
+	width: 100%;
+	height: 100%;
+	padding: 50px;
+	color: #FFF;
+	text-shadow: 1px 1px 1px #333;
+    border: 1px solid #fff;
+
+  
+}
+
+h1 {
+	font-family: 'weddingStarlightFont';
+    font-size: 100px;
+	
+}
+
+h3{	
+	font-family: 'weddingSCriptFont';
+    font-size: 60px;
+}
+
+
+p{
+    font-family: 'times new roman';
+    margin: 20px;
+    margin-bottom: 50px;
+}
+
+

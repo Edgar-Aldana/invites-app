@@ -1,11 +1,21 @@
+"use client";
 import "@/app/globals.css";
 import "./topBar.css";
+import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
+import { useState } from "react";
 
 export const TopBar = () => {
+
+    const router = useRouter();
+    const [clicked, setClicked] = useState(false);
+
     return (
 
-
-        <header className="flex h-full flex-col justify-center items-center text-center text-white">
+        <motion.header className="flex h-full flex-col justify-center items-center text-center text-white"
+            initial={{ y: 0, opacity: 1 }}
+            animate={clicked ? { y: "-100vh", opacity: 0 } : { y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}>
 
             <div className="w-full flex flex-col justify-center items-center">
 
@@ -37,8 +47,15 @@ export const TopBar = () => {
                 </div>
 
 
-
-                <div className="w-[50%] sm:w-[20%] flex justify-center items-center gap-2 h-10 cursor-pointer rounded-md shadow-2xl text-white font-semibold bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] hover:shadow-xl hover:shadow-yellow-400 hover:scale-105 duration-300 mt-4 backdrop-blur-md border border-white/10">
+                
+                <motion.div
+                    onClick={() => {
+                        setClicked(true)
+                        setTimeout(() => router.push("/detalles"), 600) // Espera a que se complete la animación
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-[50%] sm:w-[20%] flex justify-center items-center gap-2 h-10 cursor-pointer rounded-md shadow-2xl text-white font-semibold bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] hover:shadow-xl hover:shadow-yellow-400 hover:scale-105 duration-300 mt-4 backdrop-blur-md border border-white/10"
+                >
                     Más detalles
                     <svg
                         className="w-5 h-5"
@@ -54,12 +71,11 @@ export const TopBar = () => {
                             strokeLinecap="round"
                         ></path>
                     </svg>
-                </div>
+                </motion.div>
 
 
             </div>
-        </header>
-
+        </motion.header>
 
     );
 };

@@ -51,6 +51,11 @@ body {
 }
 
 
+@font-face {
+	font-family: 'forumFont';
+    src: url('/media/fonts/forum_regular/Forum-Regular.ttf') format('truetype');
+}
+
 
 header {
 	

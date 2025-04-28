@@ -24,7 +24,7 @@ export function BackgroundDetails() {
                 muted
                 playsInline
             >
-                <source src="/media/video/gold_glitter.mp4" type="video/mp4" />
+                <source src="/media/video/fireworks.mp4" type="video/mp4" />
                 
             </video>
         </div>

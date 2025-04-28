@@ -15,7 +15,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #0a0a0a;
   }
 }
 
@@ -54,6 +54,11 @@ body {
 @font-face {
 	font-family: 'forumFont';
     src: url('/media/fonts/forum_regular/Forum-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'WeddingSecondaryFont';
+    src: url('/media/fonts/wedding_secondary/Wedding Font.ttf') format('truetype');
 }
 
 

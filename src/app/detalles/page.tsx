@@ -40,7 +40,7 @@ export default function Details() {
                         <div className="font-['forumFont'] text-white text-[16px] sm:text-[26px]">
 
                             El evento se llevará a cabo en la ciudad de
-                            <h3 className="text-pink-500 font-['palisadeFont'] uppercase text-[10px] sm:text-[30px]">Cuautla, Morelos</h3>
+                            <h3 className="text-[#bbdb93] font-['palisadeFont'] font-bold text-[10px] sm:text-[22px]">Cuautla, Morelos</h3>
 
                         </div>
 

@@ -1,12 +1,6 @@
 import TicketCard from "../../components/ticket/ticket";
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default function TicketPage({ params }: PageProps) {
+export default function TicketPage({ params }: { params: { id: string } }) {
   const id = params.id;
 
   const data = {

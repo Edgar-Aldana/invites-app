@@ -21,7 +21,7 @@ export default function TicketCard({ mesa, familia, integrantes }: TicketCardPro
       <img
         src="/media/images/sunflower-frame-3.png"
         alt=""
-        className="absolute inset-0 w-full h-full object-cover z-0 scale-[1.4] sm:scale-[1.4]"
+        className="absolute inset-0 w-full h-full object-cover z-0 scale-[1.4] lg:scale-[1.3]"
       />
 
 
@@ -35,7 +35,7 @@ export default function TicketCard({ mesa, familia, integrantes }: TicketCardPro
           </div>
         </div> */}
 
-        <div className="w-[48%] h-[15%] lg:w-full lg:h-[12%] flex justify-center">
+        <div className="w-[48%] h-[15%] lg:w-full lg:h-[20%] flex justify-center">
           
           <PianoCard texto={`${mesa}`} className="w-full h-full border"/>
           

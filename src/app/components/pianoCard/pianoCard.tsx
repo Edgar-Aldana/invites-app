@@ -17,11 +17,11 @@ export default function PianoCard({ texto = "Mesa por asignar", className = "" }
       <div className="w-full bg-black rounded-lg overflow-hidden">
         {/* Piano lid with text - made taller */}
         <div className="w-full h-10 py-5 px-4 border-b border-gray-700 flex items-center justify-center">
-          <div className="text-white text-center text-3xl md:text-lg font-['forumFont']">Mesa</div>
+          <div className="text-white text-center text-3xl lg:text-3xl font-['forumFont']">Mesa</div>
         </div>
 
         {/* Piano keys */}
-        <div className="relative h-14 md:h-12">
+        <div className="relative h-14 lg:h-14">
           {/* White keys - now 8 keys */}
           <div className="flex w-full h-full">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -41,41 +41,41 @@ export default function PianoCard({ texto = "Mesa por asignar", className = "" }
          
             {/* F# */}
             <div
-              className="absolute bg-gray-900 h-8 md:h-16 z-10 border border-gray-800"
+              className="absolute bg-gray-900 h-8 z-10 border border-gray-800"
               style={{
-                width: "8%",
+                width: "7%",
                 minWidth: "10px",
-                left: "calc(20% - 4%)",
+                left: "calc(20% - 3.5%)",
                 borderRadius: "0 0 3px 3px",
               }}
             />
             {/* G# */}
             <div
-              className="absolute bg-gray-900 h-8 md:h-16 z-10 border border-gray-800"
+              className="absolute bg-gray-900 h-8 z-10 border border-gray-800"
               style={{
-                width: "8%",
+                width: "7%",
                 minWidth: "12px",
-                left: "calc(40% - 4%)",
+                left: "calc(40% - 3.5%)",
                 borderRadius: "0 0 3px 3px",
               }}
             />
             {/* A# */}
             <div
-              className="absolute bg-gray-900 h-8 md:h-16 z-10 border border-gray-800"
+              className="absolute bg-gray-900 h-8 z-10 border border-gray-800"
               style={{
                 width: "7%",
                 minWidth: "12px",
-                left: "calc(60% - 4%)",
+                left: "calc(60% - 3.5%)",
                 borderRadius: "0 0 3px 3px",
               }}
             />
             {/* C# (octave 2) */}
             <div
-              className="absolute bg-gray-900 h-8 md:h-16 z-10 border border-gray-800"
+              className="absolute bg-gray-900 h-8 z-10 border border-gray-800"
               style={{
-                width: "8%",
+                width: "7%",
                 minWidth: "12px",
-                left: "calc(80% - 4%)",
+                left: "calc(80% - 3.5%)",
                 borderRadius: "0 0 3px 3px",
               }}
             />

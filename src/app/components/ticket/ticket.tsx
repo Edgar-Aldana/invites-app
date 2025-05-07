@@ -21,7 +21,7 @@ export default function TicketCard({ mesa, familia, integrantes }: TicketCardPro
       <img
         src="/media/images/sunflower-frame-3.png"
         alt=""
-        className="absolute inset-0 w-full h-full object-cover z-0 scale-[1.4] lg:scale-[1.3]"
+        className="absolute inset-0 w-full h-full object-cover z-0 scale-[1.4] lg:scale-[1.5]"
       />
 
 
@@ -29,19 +29,14 @@ export default function TicketCard({ mesa, familia, integrantes }: TicketCardPro
                       bg-black/10 rounded-2xl shadow-black">
 
 
-        {/* <div className="relative p-[3px] rounded-lg bg-gradient-to-r from-[#bbdb93] via-[#fe7d00] via-[#5b1101] to-[#ffe600] drop-shadow-white drop-shadow-lg">
-          <div className="rounded-lg bg-black/90 backdrop-blur-[10px] text-white text-2xl lg:text-3xl font-bold text-white font-['forumFont'] p-4">
-          Mesa {mesa}
-          </div>
-        </div> */}
 
         <div className="w-[48%] h-[15%] lg:w-full lg:h-[20%] flex justify-center">
-          
-          <PianoCard texto={`${mesa}`} className="w-full h-full border"/>
-          
+
+          <PianoCard texto={`${mesa}`} className="w-full h-full border" />
+
         </div>
-        
-        
+
+
 
         <div className="w-full text-[50px] text-center sm:text-[55px] lg:text-[60px] text-white font-['weddingSecondaryFont'] z-10 drop-shadow-lg drop-shadow-white">
           Nuestra Boda
@@ -50,6 +45,7 @@ export default function TicketCard({ mesa, familia, integrantes }: TicketCardPro
         <div className="flex flex-col w-full text-[50px] text-center sm:text-[55px] lg:text-[60px] text-white font-['weddingScriptFont']">
           <span> A y E</span>
           <span className="font-['brillantFont'] text-[22px] font-semibold text-[#bbdb93]"> <br />26/09/2026</span>
+
 
           <img
             src="/media/images/butterfly.png"
@@ -65,17 +61,29 @@ export default function TicketCard({ mesa, familia, integrantes }: TicketCardPro
           />
 
 
+          <img src="/media/images/heart-elegant.png"
+            alt=""
+            className="absolute w-[20vw] max-w-[170px] h-auto top-[33%] left-[5%] lg:w-[10vw] lg:top-[32%] lg:left-[7%] rotate-[30deg]" />
+
+
+
+          <img src="/media/images/notes.png"
+            alt=""
+            className="absolute w-[20vw] max-w-[220px] h-auto top-[49%] right-[6%] lg:w-[9vw] lg:top-[48%] lg:right-[8%]" />
+          
+
+
           <img
             src="/media/images/butterfly-golden.png"
             alt=""
-            className="absolute w-[32vw] max-w-[220px] h-auto bottom-[36%] sm:bottom-[25%] left-[0%] rotate-[45deg]"
+            className="absolute w-[32vw] max-w-[210px] h-auto bottom-[36%] lg:bottom-[7%] left-[0%] rotate-[45deg]"
           />
 
 
           <img
             src="/media/images/butterfly-golden-2.png"
             alt=""
-            className="absolute w-[18vw] max-w-[120px] h-auto bottom-[28%] lg:bottom-[13%] right-[8%] -rotate-[38deg]"
+            className="absolute w-[18vw] max-w-[120px] h-auto bottom-[28%] lg:bottom-[5%] right-[8%] -rotate-[38deg]"
           />
 
 

@@ -245,7 +245,7 @@ export default function Asistencia() {
           26 de septiembre de 2026
         </h3>
         <h3 className="text-[#bbdb93] italic tracking-widest uppercase text-xs sm:text-lg">
-          Confirma tu asistencia
+          Confirma tu lugar
         </h3>
         <Separator marginDown="4" width="32" height="0.5" color="yellow" />
 
@@ -264,7 +264,13 @@ export default function Asistencia() {
           <div className="w-full max-w-md p-6 rounded-lg bg-black/50 border border-[#ffe600]/30 shadow-lg">
             <div className="text-[#ffe600] text-xl mb-4 font-['forumFont']">Cargando información...</div>
             <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#ffe600]"></div>
+              <motion.img
+                src="/media/images/sunflower-loading.png"
+                alt="Cargando..."
+                className="w-16 h-16"
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1.2, ease: "linear" }}
+              />
             </div>
           </div>
         ) : submitted ? (

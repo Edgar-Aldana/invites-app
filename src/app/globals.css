@@ -62,6 +62,12 @@ body {
 }
 
 
+@font-face {
+	font-family: 'oswaldFont';
+    src: url('/media/fonts/oswald/Oswald-VariableFont_wght.ttf') format('truetype');
+}
+
+
 header {
 	
 	text-align: center;

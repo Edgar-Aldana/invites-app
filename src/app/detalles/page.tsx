@@ -4,14 +4,20 @@ import { motion } from "framer-motion";
 import { BackgroundDetails } from "../components/backgroundDetails/backgroundDetails";
 import { Separator } from "../components/separator/separator";
 import { AnimatedText } from "../components/textShadow/textShadow";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Details() {
+    const router = useRouter();
+    const [clicked, setClicked] = useState(false);
+
+    const handleConfirmacionClick = () => {
+        setClicked(true);
+        setTimeout(() => router.push("/asistencia"), 600);
+    };
 
     return (
-
-
         <motion.div
-
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="w-full min-h-screen bg-transparent flex flex-col items-center">
@@ -65,16 +71,18 @@ export default function Details() {
                         <p className="text-green-200 mt-1">Ceremonia - 05:00PM</p>
                         <p className="text-green-200 mt-1">Recepción - 07:00PM</p>
                     </div>
-
-
-
-
                 </div>
 
+                <div className="mt-10 mb-6">
+                    <motion.button 
+                        onClick={handleConfirmacionClick}
+                        whileTap={{ scale: 0.95 }}
+                        className="w-[250px] sm:w-[300px] flex justify-center items-center gap-2 h-14 cursor-pointer rounded-md shadow-2xl text-white font-semibold bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] hover:shadow-xl hover:shadow-yellow-400 hover:scale-105 duration-300 backdrop-blur-md border border-white/35"
+                    >
+                        Confirmar Asistencia
+                    </motion.button>
+                </div>
             </div>
-
-
-
         </motion.div>
     );
 }

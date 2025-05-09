@@ -5,7 +5,7 @@ import { BackgroundDetails } from "../components/backgroundDetails/backgroundDet
 import { Separator } from "../components/separator/separator";
 import { AnimatedText } from "../components/textShadow/textShadow";
 import { useRouter } from "next/navigation";
-import { FaCheckCircle, FaTimesCircle, FaUserPlus, FaWhatsapp, FaEnvelope, FaHeart, FaArrowLeft, FaCalendarAlt } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaUserPlus, FaWhatsapp, FaEnvelope, FaHeart, FaArrowLeft, FaCalendarAlt, FaPencilAlt, FaInfoCircle } from "react-icons/fa";
 import { BsPerson, BsPersonCheck } from "react-icons/bs";
 
 interface FamilyMember {
@@ -35,10 +35,11 @@ export default function Asistencia() {
   const [invitadoData, setInvitadoData] = useState<InvitadoData | null>(null);
   const [loading, setLoading] = useState(true);
   const [telefonoError, setTelefonoError] = useState<string | null>(null);
+  const [editingPhone, setEditingPhone] = useState(false);
 
   // Inicializar con asistencia "si"
   const [formData, setFormData] = useState<FormData>({
-    telefono: "",
+    telefono: "5512634987",
     asistencia: "si",
     miembrosConfirmados: [],
     agregarExtras: false,
@@ -263,7 +264,7 @@ export default function Asistencia() {
             color="#ffffff"
             shadowColor="#ffe600"
           >
-            {invitadoData?.familia || "Familia"}
+            {invitadoData?.familia || ""}
           </AnimatedText>
         </div>
         
@@ -271,7 +272,7 @@ export default function Asistencia() {
           <div className="text-white text-center text-sm sm:text-base flex items-center justify-center" style={{ fontFamily: 'Oswald, sans-serif', lineHeight: '1.5', margin: 0, padding: 0 }}>
             <FaCalendarAlt className="text-[#ffe600] mr-2 flex-shrink-0 animate-pulse" />
             <span>
-              <span className="text-[#ffe600] font-semibold">¡Tu respuesta es importante! 💌</span> Por favor completa este formulario antes del <span className="text-[#ffe600] font-semibold ml-1">15 de agosto de 2026</span> para indicarnos si podemos contar con su presencia. 
+              <span className="text-[#ffe600] font-semibold">¡Tu respuesta es importante! 💌</span> Por favor completa este formulario antes del <span className="text-[#ffe600] font-semibold ml-1">21 de marzo de 2026</span> para indicarnos si podemos contar con su presencia. 
               <br /> <br />
               <span className="text-green-300 font-semibold text-sm">¡Gracias por ayudarnos a organizar este día especial!</span>
             </span>
@@ -292,7 +293,7 @@ export default function Asistencia() {
             </div>
           </div>
         ) : submitted ? (
-          <div className="w-full max-w-md p-6 rounded-lg bg-black/50 border border-[#ffe600]/30 shadow-lg">
+          <div className="w-full max-w-md p-6 rounded-lg bg-black/50 border border-[#ffe600] shadow-lg">
             <div className="text-[#ffe600] text-2xl mb-4 font-['forumFont']">¡Gracias por tu tiempo!</div>
             <p className="text-white mb-4">Hemos recibido tu respuesta.</p>
             <div className="text-[#bbdb93]">Redirigiendo...</div>
@@ -300,7 +301,7 @@ export default function Asistencia() {
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="w-full max-w-md p-6 rounded-lg bg-black/50 border border-[#ffe600]/30 shadow-lg"
+            className="w-full max-w-md p-6 rounded-lg bg-black/50 border border-[#ffe600]/60 shadow-lg"
           >
             {invitadoData && (
               <div className="mb-6">
@@ -322,7 +323,7 @@ export default function Asistencia() {
                         className="w-4 h-4 accent-[#bbdb93] bg-black border-[#bbdb93]"
                       />
                       <label htmlFor="asistencia-si" className="ml-2 flex items-center text-white">
-                        <FaCheckCircle className="mr-1 text-green-400" /> Sí, asistiré
+                        Sí, asistiré
                       </label>
                     </div>
                     <div className="flex items-center">
@@ -333,10 +334,10 @@ export default function Asistencia() {
                         value="no"
                         checked={formData.asistencia === "no"}
                         onChange={handleChange}
-                        className="w-4 h-4 accent-[#bbdb93] bg-black border-[#bbdb93]"
+                        className="w-4 h-4 accent-[red] bg-black border-[#bbdb93]"
                       />
                       <label htmlFor="asistencia-no" className="ml-2 flex items-center text-white">
-                        <FaTimesCircle className="mr-1 text-red-400" /> No podré asistir
+                         No podré asistir
                       </label>
                     </div>
                   </div>
@@ -358,7 +359,7 @@ export default function Asistencia() {
                               checked={formData.miembrosConfirmados.includes(miembro.id)}
                               onChange={(e) => handleMemberChange(miembro.id, e.target.checked)}
                               className="w-5 h-5"
-                              style={{ accentColor: 'white' }}
+                              style={{ accentColor: '[#bbdb93]' }}
                             />
                             <label htmlFor={`miembro-${miembro.id}`} className="ml-2 text-white font-semibold flex items-center">
                               <BsPerson className="mr-1 text-blue-300" /> {miembro.nombre}
@@ -382,7 +383,7 @@ export default function Asistencia() {
                           Invitados adicionales ({invitadoData.maxExtras})
                         </div>
 
-                        <div className="text-pink-400 text-sm">
+                        <div className="text-pink-400 text-xs">
                           Sabemos que existen personas importantes que comparten contigo,
                           por lo que si conocemos a tu pareja, siéntete libre de agregar su información en esta sección.
                         </div>
@@ -397,7 +398,7 @@ export default function Asistencia() {
                             checked={formData.agregarExtras}
                             onChange={handleChange}
                             className="w-5 h-5 border-2"
-                            style={{ accentColor: 'white' }}
+                            style={{ accentColor: '#ff00ff' }}
                           />
                           <label htmlFor="agregarExtras" className="ml-2 flex items-center text-[#ffc600] text-md font-medium">
                              ¿Llevarás pareja?
@@ -439,11 +440,19 @@ export default function Asistencia() {
                       </div>
                     )}
 
-                    <div className="mb-4">
-                      <label htmlFor="telefono" className="flex justify-center items-center text-green-300 text-md font-medium mb-2">
+                    <div className="mb-4 border border-green-300 rounded-xl border-dashed flex flex-col items-center p-2">
+
+                    <label htmlFor="telefono" className="flex justify-center items-center text-green-300 text-md font-medium mb-2">
                         <FaWhatsapp className="mr-2 text-green-400" />
-                        Número de Whatsapp *
+                        Notificaciones del evento
                       </label>
+                      
+                      <div className="text-white text-xs mb-4">
+                          El número registrado es el que se utilizará para enviar su ticket.
+                          Modificar si es necesario.
+                      </div>
+
+                      
                       <div>
                         <input
                           type="tel"
@@ -477,12 +486,20 @@ export default function Asistencia() {
               </div>
             )}
 
-            <div className="mb-6">
-              <label htmlFor="mensaje" className="flex justify-center items-center text-pink-400 text-md font-medium mb-2">
+            <div className="mb-6 border border-pink-300 rounded-xl border-dashed flex flex-col items-center p-2">
+              
+              <label htmlFor="mensaje" className="flex justify-center items-center text-pink-400 text-md font-medium mb-4">
                 <FaEnvelope className="mr-2 text-pink-300" />
                 Buzón de los novios (opcional)
               </label>
-              <div>
+
+              <div className="text-white text-xs mb-4">
+                        {invitadoData?.familia}, Nos encantaría  leer sus buenos deseos.
+                        
+              </div>
+
+
+              <div className="w-[95%]">
                 <textarea
                   id="mensaje"
                   name="mensaje"
@@ -490,7 +507,7 @@ export default function Asistencia() {
                   onChange={handleChange}
                   rows={3}
                   className="w-full px-3 py-2 bg-black/70 border border-[#ffe600]/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#ffe600]/50"
-                  placeholder="¿Algún mensaje para los novios?"
+                  placeholder="!Déjanos un mensaje que recordemos por siempre!"
                 ></textarea>
               </div>
             </div>

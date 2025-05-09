@@ -79,7 +79,7 @@ export default function Details() {
                         whileTap={{ scale: 0.95 }}
                         className="w-[250px] sm:w-[300px] flex justify-center items-center gap-2 h-14 cursor-pointer rounded-md shadow-2xl text-white font-semibold bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] hover:shadow-xl hover:shadow-yellow-400 hover:scale-105 duration-300 backdrop-blur-md border border-white/35"
                     >
-                        Confirmar Asistencia
+                        Responder al evento
                     </motion.button>
                 </div>
             </div>

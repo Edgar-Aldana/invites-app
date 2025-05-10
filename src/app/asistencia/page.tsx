@@ -133,10 +133,10 @@ export default function Asistencia() {
         extras: target.checked ? prev.extras : []
       }));
     } else if (name === 'telefono') {
-    
+
       const numericValue = value.replace(/\D/g, '');
 
-   
+
       if (formData.asistencia === "si" && numericValue.length !== 0 && numericValue.length !== 10) {
         setTelefonoError("El número debe tener 10 dígitos");
       } else {
@@ -165,7 +165,7 @@ export default function Asistencia() {
     }));
   };
 
-  
+
   const addExtra = () => {
     if (invitadoData && formData.extras.length < invitadoData.maxExtras) {
       const newId = Date.now();
@@ -176,7 +176,7 @@ export default function Asistencia() {
     }
   };
 
- 
+
   const removeExtra = (id: number) => {
     setFormData(prev => ({
       ...prev,
@@ -185,14 +185,14 @@ export default function Asistencia() {
   };
 
   const validateForm = (): boolean => {
-    
+
     if (formData.asistencia === "si") {
       if (formData.telefono.length !== 10) {
         setTelefonoError("El número debe tener 10 dígitos");
         return false;
       }
 
-      
+
       if (formData.miembrosConfirmados.length === 0) {
         return false;
       }
@@ -263,12 +263,12 @@ export default function Asistencia() {
             {invitadoData?.familia || ""}
           </AnimatedText>
         </div>
-        
+
         <div className="bg-[#ffe600]/20 border border-[#ffe600] rounded-lg p-3 mb-8 max-w-md mx-auto">
           <div className="text-white text-center text-sm sm:text-base flex items-center justify-center" style={{ fontFamily: 'Oswald, sans-serif', lineHeight: '1.5', margin: 0, padding: 0 }}>
             <FaCalendarAlt className="text-[#ffe600] mr-2 flex-shrink-0 animate-pulse" />
             <span>
-              <span className="text-[#ffe600] font-semibold">¡Tu respuesta es importante! 💌</span> Por favor completa este formulario antes del <span className="text-[#ffe600] font-semibold ml-1">21 de marzo de 2026</span> para indicarnos si podemos contar con su presencia. 
+              <span className="text-[#ffe600] font-semibold">¡Tu respuesta es importante! 💌</span> Por favor completa este formulario antes del <span className="text-[#ffe600] font-semibold ml-1">21 de marzo de 2026</span> para indicarnos si podemos contar con su presencia.
               <br /> <br />
               <span className="text-green-300 font-semibold text-sm">¡Gracias por ayudarnos a organizar este día especial!</span>
             </span>
@@ -292,14 +292,18 @@ export default function Asistencia() {
           <div className="w-full max-w-md p-6 rounded-lg bg-black/50 border border-[#ffe600] shadow-lg">
             <div className="text-[#ffe600] text-2xl mb-4 font-['forumFont']">¡Gracias por tu tiempo!</div>
             <p className="text-white mb-4">Hemos recibido tu respuesta.</p>
-            <div className="flex flex-col items-center mt-6">
-              <button
-                onClick={() => router.push("/itinerario")}
-                className="px-6 py-3 bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] rounded-md text-white font-semibold border border-white/30 hover:shadow-lg hover:shadow-yellow-400/30 transition-all duration-300 flex items-center"
-              >
-                <FaCalendarAlt className="mr-2 text-yellow-300" /> Ver itinerario
-              </button>
-            </div>
+
+            {formData.asistencia === "si" && (
+              <div className="flex flex-col items-center mt-6">
+                <button
+                  onClick={() => router.push("/itinerario")}
+                  className="px-6 py-3 bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] rounded-md text-white font-semibold border border-white/30 hover:shadow-lg hover:shadow-yellow-400/30 transition-all duration-300 flex items-center"
+                >
+                  <FaCalendarAlt className="mr-2 text-yellow-300" /> Ver itinerario
+                </button>
+              </div>
+            )}
+
           </div>
         ) : (
           <form
@@ -340,7 +344,7 @@ export default function Asistencia() {
                         className="w-4 h-4 accent-[red] bg-black border-[#bbdb93]"
                       />
                       <label htmlFor="asistencia-no" className="ml-2 flex items-center text-white">
-                         No podré asistir
+                        No podré asistir
                       </label>
                     </div>
                   </div>
@@ -404,7 +408,7 @@ export default function Asistencia() {
                             style={{ accentColor: '#ff00ff' }}
                           />
                           <label htmlFor="agregarExtras" className="ml-2 flex items-center text-[#ffc600] text-md font-medium">
-                             ¿Llevarás pareja?
+                            ¿Llevarás pareja?
                           </label>
                         </div>
 
@@ -445,17 +449,17 @@ export default function Asistencia() {
 
                     <div className="mb-4 border border-green-300 rounded-xl border-dashed flex flex-col items-center p-2">
 
-                    <label htmlFor="telefono" className="flex justify-center items-center text-green-300 text-md font-medium mb-2">
+                      <label htmlFor="telefono" className="flex justify-center items-center text-green-300 text-md font-medium mb-2">
                         <FaWhatsapp className="mr-2 text-green-400" />
                         Notificaciones del evento
                       </label>
-                      
+
                       <div className="text-white text-xs mb-4">
-                          El número registrado, se utilizará para enviar su ticket de entrada.
-                          Modificar si es necesario.
+                        El número registrado, se utilizará para enviar su ticket de entrada.
+                        Modificar si es necesario.
                       </div>
 
-                      
+
                       <div>
                         <input
                           type="tel"
@@ -491,15 +495,15 @@ export default function Asistencia() {
             )}
 
             <div className="mb-6 border border-pink-300 rounded-xl border-dashed flex flex-col items-center p-2">
-              
+
               <label htmlFor="mensaje" className="flex justify-center items-center text-pink-400 text-md font-medium mb-4">
                 <FaEnvelope className="mr-2 text-pink-300" />
                 Buzón de los novios (opcional)
               </label>
 
               <div className="text-white text-xs mb-4">
-                        {invitadoData?.familia}, Nos encantaría  leer sus buenos deseos.
-                        
+                {invitadoData?.familia}, Nos encantaría  leer sus buenos deseos.
+
               </div>
 
 

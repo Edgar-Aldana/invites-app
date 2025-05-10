@@ -5,7 +5,7 @@ import { BackgroundDetails } from "../components/backgroundDetails/backgroundDet
 import { Separator } from "../components/separator/separator";
 import { AnimatedText } from "../components/textShadow/textShadow";
 import { useRouter } from "next/navigation";
-import { FaCheckCircle, FaTimesCircle, FaUserPlus, FaWhatsapp, FaEnvelope, FaHeart, FaArrowLeft, FaCalendarAlt, FaPencilAlt, FaInfoCircle } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaUserPlus, FaWhatsapp, FaEnvelope, FaHeart, FaArrowLeft, FaCalendarAlt, FaPencilAlt, FaInfoCircle, FaHandHoldingHeart } from "react-icons/fa";
 import { BsPerson, BsPersonCheck } from "react-icons/bs";
 
 interface FamilyMember {
@@ -222,11 +222,7 @@ export default function Asistencia() {
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
-
-      // Redirigir después de 2 segundos
-      setTimeout(() => {
-        router.push("/itinerario");
-      }, 2000);
+      // Ya no redireccionamos automáticamente
     }, 1500);
   };
 
@@ -296,7 +292,14 @@ export default function Asistencia() {
           <div className="w-full max-w-md p-6 rounded-lg bg-black/50 border border-[#ffe600] shadow-lg">
             <div className="text-[#ffe600] text-2xl mb-4 font-['forumFont']">¡Gracias por tu tiempo!</div>
             <p className="text-white mb-4">Hemos recibido tu respuesta.</p>
-            <div className="text-[#bbdb93]">Redirigiendo...</div>
+            <div className="flex flex-col items-center mt-6">
+              <button
+                onClick={() => router.push("/itinerario")}
+                className="px-6 py-3 bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] rounded-md text-white font-semibold border border-white/30 hover:shadow-lg hover:shadow-yellow-400/30 transition-all duration-300 flex items-center"
+              >
+                <FaCalendarAlt className="mr-2 text-yellow-300" /> Ver itinerario
+              </button>
+            </div>
           </div>
         ) : (
           <form
@@ -320,7 +323,7 @@ export default function Asistencia() {
                         value="si"
                         checked={formData.asistencia === "si"}
                         onChange={handleChange}
-                        className="w-4 h-4 accent-[#bbdb93] bg-black border-[#bbdb93]"
+                        className="w-4 h-4 accent-green-500 bg-black border-[#bbdb93]"
                       />
                       <label htmlFor="asistencia-si" className="ml-2 flex items-center text-white">
                         Sí, asistiré
@@ -448,7 +451,7 @@ export default function Asistencia() {
                       </label>
                       
                       <div className="text-white text-xs mb-4">
-                          El número registrado es el que se utilizará para enviar su ticket.
+                          El número registrado, se utilizará para enviar su ticket de entrada.
                           Modificar si es necesario.
                       </div>
 
@@ -475,12 +478,13 @@ export default function Asistencia() {
                   </>
                 ) : (
                   <div className="mb-4 p-4 bg-black/40 rounded-md text-center font-[oswaldFont] flex flex-col text-xl items-center justify-center">
-                    <div className="flex items-center text-yellow-300 mb-2">
-                      <FaTimesCircle className="mr-2 text-yellow-300" />
-                      <span>Lamentamos que no puedan acompañarnos.</span>
+                    <div className="flex flex-col justify-center items-center text-yellow-300 mb-2">
+                      <FaHandHoldingHeart className="w-10 h-10 mr-2 text-pink-500" />
+                      <span className="font-bold text-white mt-2">{invitadoData?.familia} </span>
+                      <span>Sabemos que aunque no podrás asistir, te encontrarás con nosotros en espíritu.</span>
                     </div>
-                    <span className="text-white">¡Gracias por hacérnoslo saber!</span>
-                    <span className="text-green-400">¡Nos veremos pronto para festejar!</span>
+                    <span className="text-green-400">¡Gracias por hacérnoslo saber!</span>
+
                   </div>
                 )}
               </div>
@@ -515,7 +519,7 @@ export default function Asistencia() {
             <div className="flex justify-center">
               <motion.button
                 type="submit"
-                disabled={isSubmitting || (formData.asistencia === "si" && (formData.telefono.length !== 10 || formData.miembrosConfirmados.length === 0))}
+                disabled={isSubmitting || (formData.asistencia === "si" && (formData.telefono.length !== 10 || formData.miembrosConfirmados.length === 0 || (formData.agregarExtras && (formData.extras.length === 0 || formData.extras.some(extra => extra.nombre.trim() === "")))))}
                 whileTap={{ scale: 0.95 }}
                 className="w-[60%] sm:w-[65%] md:w-[70%] lg:w-[75%] flex justify-center items-center gap-2 h-14 cursor-pointer rounded-md shadow-2xl text-white font-semibold bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] hover:shadow-xl hover:shadow-yellow-400 hover:scale-105 duration-300 backdrop-blur-md border border-white/35 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
               >

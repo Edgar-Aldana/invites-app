@@ -79,7 +79,7 @@ export default function Asistencia() {
   }, []);
 
   // Estado para mostrar aviso de selección requerida
-  const [showSelectionWarning, setShowSelectionWarning] = useState(false);
+  const [showSelectionWarning, setShowSelectionWarning] = useState(true);
 
   // Manejar cambios en los checkboxes de miembros de familia
   const handleMemberChange = (id: number, checked: boolean) => {
@@ -88,7 +88,7 @@ export default function Asistencia() {
         ? [...prev.miembrosConfirmados, id]
         : prev.miembrosConfirmados.filter(memberId => memberId !== id);
 
-      // Mostrar aviso si no hay miembros seleccionados
+     
       if (newMiembrosConfirmados.length === 0) {
         setShowSelectionWarning(true);
       } else {
@@ -218,18 +218,19 @@ export default function Asistencia() {
       ...formData
     });
 
-    // Simulando un envío con un timeout
+ 
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
-      // Ya no redireccionamos automáticamente
+   
     }, 1500);
   };
 
-  // Determinar si mostrar la sección de asistencia "si"
+
+  
   const showSiSection = formData.asistencia === "si";
 
-  // Determinar si mostrar la sección de asistencia "no"
+  
   const showNoSection = formData.asistencia === "no";
 
   return (
@@ -268,7 +269,7 @@ export default function Asistencia() {
           <div className="text-white text-center text-sm sm:text-base flex items-center justify-center" style={{ fontFamily: 'Oswald, sans-serif', lineHeight: '1.5', margin: 0, padding: 0 }}>
             <FaCalendarAlt className="text-[#ffe600] mr-2 flex-shrink-0 animate-pulse" />
             <span>
-              <span className="text-[#ffe600] font-semibold">¡Tu respuesta es importante! 💌</span> Por favor completa este formulario antes del <span className="text-[#ffe600] font-semibold ml-1">21 de marzo de 2026</span> para indicarnos si podemos contar con su presencia.
+              <span className="text-[#ffe600] font-semibold">¡Tu respuesta es importante! 💌</span> Por favor completa este formulario antes del <span className="text-[#ffe600] font-semibold ml-1">21 de marzo de 2026</span> para indicarnos si podemos contar con tu presencia.
               <br /> <br />
               <span className="text-green-300 font-semibold text-sm">¡Gracias por ayudarnos a organizar este día especial!</span>
             </span>
@@ -327,7 +328,7 @@ export default function Asistencia() {
                         value="si"
                         checked={formData.asistencia === "si"}
                         onChange={handleChange}
-                        className="w-4 h-4 accent-green-500 bg-black border-[#bbdb93]"
+                        className="w-4 h-4 accent-blue-600 bg-black border-[#bbdb93]"
                       />
                       <label htmlFor="asistencia-si" className="ml-2 flex items-center text-white">
                         Sí, asistiré
@@ -353,10 +354,18 @@ export default function Asistencia() {
                 {showSiSection ? (
                   <>
                     <div className="mb-4 flex flex-col items-center">
+
                       <label className="flex justify-center items-center text-[#ffc600] text-lg font-medium mb-2 w-full">
                         <BsPersonCheck className="mr-2 text-blue-300 text-xl" />
-                        Confirma quién asistirá:
+                        Selecciona de la lista, quien asistirá:
                       </label>
+
+                      {showSelectionWarning && (
+                        <div className="mt-2 text-orange-400 bg-black/65 border border-blue-300 px-3 py-1 rounded-md text-sm font-semibold flex items-center">
+                          <BsPersonCheck className="mr-2" /> Es necesario seleccionar al menos un invitado
+                        </div>
+                      )}
+
                       <div className="space-y-2 bg-black/40 p-3 rounded-md">
                         {invitadoData.miembros.map(miembro => (
                           <div key={miembro.id} className="flex items-center">
@@ -374,11 +383,7 @@ export default function Asistencia() {
                           </div>
                         ))}
                       </div>
-                      {showSelectionWarning && (
-                        <div className="mt-2 text-red-500 bg-white/85 border border-red-500 px-3 py-1 rounded-md text-sm font-semibold flex items-center">
-                          <BsPersonCheck className="mr-2" /> Es necesario seleccionar al menos un invitado
-                        </div>
-                      )}
+                     
                     </div>
 
 
@@ -408,7 +413,7 @@ export default function Asistencia() {
                             style={{ accentColor: '#ff00ff' }}
                           />
                           <label htmlFor="agregarExtras" className="ml-2 flex items-center text-[#ffc600] text-md font-medium">
-                            ¿Llevarás pareja?
+                            ¿Incluirás pareja?
                           </label>
                         </div>
 
@@ -454,9 +459,9 @@ export default function Asistencia() {
                         Notificaciones del evento
                       </label>
 
-                      <div className="text-white text-xs mb-4">
-                        El número registrado, se utilizará para enviar su ticket de entrada.
-                        Modificar si es necesario.
+                      <div className="text-white mb-4">
+                        <span className="text-sm">El número registrado, se utilizará para enviar su ticket de entrada.</span>
+                        <span className="text-sm italic text-yellow-200"> Modificar sólo si es necesario.</span>
                       </div>
 
 
@@ -502,7 +507,7 @@ export default function Asistencia() {
               </label>
 
               <div className="text-white text-xs mb-4">
-                {invitadoData?.familia}, Nos encantaría  leer sus buenos deseos.
+                {invitadoData?.familia}, nos encantaría  leer tus buenos deseos.
 
               </div>
 

@@ -43,8 +43,8 @@ export default function Details() {
         setInvitadoData({
             id: "fam123",
             familia: "Familia Zarazúa Cruz",
-            respuesta: false,
-            asistir: null
+            respuesta: true,
+            asistir: false
         });
 
     }, []);

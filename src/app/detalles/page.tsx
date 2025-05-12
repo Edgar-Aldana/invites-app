@@ -26,7 +26,7 @@ export default function Details() {
     const [invitadoData, setInvitadoData] = useState<InvitadoData | null>(null);
 
     const today = new Date();
-    const deadline = new Date("2025-05-10");
+    const deadline = new Date("2026-03-21");
 
     const showRespondButton = invitadoData?.respuesta === false && invitadoData?.asistir === null && today < deadline;
     const showItineraryButton = invitadoData?.respuesta === true && invitadoData?.asistir === true;

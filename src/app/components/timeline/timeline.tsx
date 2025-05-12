@@ -36,13 +36,13 @@ export const WeddingTimeline = () => {
           </div>
           
           <div className="w-0 flex flex-col items-center mx-5">
-            <div className="bg-white/10 border border-white/40 backdrop-blur-sm p-2 rounded-full text-3xl text-yellow-300 shadow-lg">
+            <div className="bg-white/10 border border-white/40 backdrop-blur-sm p-2 rounded-full text-3xl text-yellow-400 shadow-lg">
               {event.icon}
             </div>
           </div>
 
           <div className="w-1/2 text-left pl-6 flex flex-col justify-center items-start text-sm sm:text-lg text-white">
-            {event.subtitle && <span className="text-md text-yellow-100 italic">{event.subtitle}</span>}
+            {event.subtitle && <span className="text-md text-yellow-400 italic">{event.subtitle}</span>}
             <span className="text-white font-semibold">{event.time}</span>
           </div>
         </motion.div>

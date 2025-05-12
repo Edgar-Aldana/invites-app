@@ -5,8 +5,10 @@ import { BackgroundDetails } from "../components/backgroundDetails/backgroundDet
 import { Separator } from "../components/separator/separator";
 import { AnimatedText } from "../components/textShadow/textShadow";
 import { useRouter } from "next/navigation";
-import { FaCheckCircle, FaTimesCircle, FaUserPlus, FaWhatsapp, FaEnvelope, FaHeart, FaArrowLeft, FaCalendarAlt, FaPencilAlt, FaInfoCircle, FaHandHoldingHeart } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaUserPlus, FaWhatsapp, FaEnvelope, FaHeart, FaArrowLeft, FaCalendarAlt, FaPencilAlt, FaInfoCircle, FaHandHoldingHeart, FaTrashAlt } from "react-icons/fa";
 import { BsPerson, BsPersonCheck } from "react-icons/bs";
+import { PiWarning } from "react-icons/pi";
+import { CheckCheckIcon, CheckSquare } from "lucide-react";
 
 interface FamilyMember {
   id: number;
@@ -88,7 +90,7 @@ export default function Asistencia() {
         ? [...prev.miembrosConfirmados, id]
         : prev.miembrosConfirmados.filter(memberId => memberId !== id);
 
-     
+
       if (newMiembrosConfirmados.length === 0) {
         setShowSelectionWarning(true);
       } else {
@@ -218,19 +220,32 @@ export default function Asistencia() {
       ...formData
     });
 
- 
+
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
-   
+
     }, 1500);
   };
 
 
-  
+  const isDisabled = isSubmitting || (
+    formData.asistencia === "si" &&
+    (
+      formData.telefono.length !== 10 ||
+      formData.miembrosConfirmados.length === 0 ||
+      (formData.agregarExtras && (
+        formData.extras.length === 0 ||
+        formData.extras.some(extra => extra.nombre.trim() === "")
+      ))
+    )
+  );
+
+
+
   const showSiSection = formData.asistencia === "si";
 
-  
+
   const showNoSection = formData.asistencia === "no";
 
   return (
@@ -296,12 +311,12 @@ export default function Asistencia() {
 
             {formData.asistencia === "si" && (
               <div className="flex flex-col items-center mt-6">
-                <button
+                <motion.div
                   onClick={() => router.push("/itinerario")}
                   className="px-6 py-3 bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] rounded-md text-white font-semibold border border-white/30 hover:shadow-lg hover:shadow-yellow-400/30 transition-all duration-300 flex items-center"
                 >
                   <FaCalendarAlt className="mr-2 text-yellow-300" /> Ver itinerario
-                </button>
+                </motion.div>
               </div>
             )}
 
@@ -309,11 +324,15 @@ export default function Asistencia() {
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="w-full max-w-md p-6 rounded-lg bg-black/50 border border-[#ffe600]/60 shadow-lg"
+            className="w-full max-w-md p-6 rounded-lg bg-black/50 border border-[#ffe600]/60 shadow-lg flex flex-col items-center"
           >
             {invitadoData && (
               <div className="mb-6">
+
                 <div className="mb-6 flex flex-col justify-center items-center">
+
+
+
                   <label className="flex justify-center items-center text-[#ffc600] text-lg font-medium mb-2 w-full">
                     <FaHeart className="mr-2 text-pink-400 animate-pulse" />
                     ¿Podrás asistir?
@@ -349,21 +368,37 @@ export default function Asistencia() {
                       </label>
                     </div>
                   </div>
+
                 </div>
 
                 {showSiSection ? (
                   <>
-                    <div className="mb-4 flex flex-col items-center">
+                    <div className="mb-8 flex flex-col items-center border border-dashed border-blue-400 p-3 rounded-xl">
 
-                      <label className="flex justify-center items-center text-[#ffc600] text-lg font-medium mb-2 w-full">
+                      <div className="flex justify-center items-center text-white mb-4 italic w-full">
                         <BsPersonCheck className="mr-2 text-blue-300 text-xl" />
-                        Selecciona de la lista, quien asistirá:
-                      </label>
+                         Invitados
+                      </div>
+
+                      <div className="text-blue-300 text-sm mb-2 flex gap-3 flex-col justify-center items-center w-full">
+                          
+                          <h4 className="w-[90%]">
+                            Para confirmar asistencia, presiona sobre el recuadro blanco de cada invitado.
+                          </h4>
+
+                          <CheckSquare className="w-4 h-4 text-white"/>
+                          
+                      </div>
+
+                       
 
                       {showSelectionWarning && (
-                        <div className="mt-2 text-orange-400 bg-black/65 border border-blue-300 px-3 py-1 rounded-md text-sm font-semibold flex items-center">
-                          <BsPersonCheck className="mr-2" /> Es necesario seleccionar al menos un invitado
-                        </div>
+                     
+                        <span className="text-red-600 text-sm font-[oswaldFont] bg-yellow-300 rounded-md p-1 flex items-center justify-cente mb-2">
+                          Es necesario seleccionar al menos un invitado
+                        </span>
+
+
                       )}
 
                       <div className="space-y-2 bg-black/40 p-3 rounded-md">
@@ -383,7 +418,7 @@ export default function Asistencia() {
                           </div>
                         ))}
                       </div>
-                     
+
                     </div>
 
 
@@ -428,24 +463,22 @@ export default function Asistencia() {
                                   placeholder={`Nombre del invitado adicional ${index + 1}`}
                                   className="flex-1 px-3 py-2 bg-black/70 border border-[#ffe600]/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#ffe600]/50"
                                 />
-                                <button
-                                  type="button"
+                                <motion.div
                                   onClick={() => removeExtra(extra.id)}
                                   className="p-2 text-[#ff9eb1] hover:text-[#ff7a93]"
                                 >
-                                  ✕
-                                </button>
+                                  <FaTrashAlt className="w-4 h-4 text-red-400" />
+                                </motion.div>
                               </div>
                             ))}
 
                             {formData.extras.length < invitadoData.maxExtras && (
-                              <button
-                                type="button"
+                              <motion.div
                                 onClick={addExtra}
                                 className="mt-2 px-4 py-1 bg-black/50 border border-[#ffc600]/30 rounded-md text-[#ffc600] hover:bg-black/70 transition-colors"
                               >
                                 + Agregar invitado adicional
-                              </button>
+                              </motion.div>
                             )}
                           </div>
                         )}
@@ -499,15 +532,16 @@ export default function Asistencia() {
               </div>
             )}
 
-            <div className="mb-6 border border-pink-300 rounded-xl border-dashed flex flex-col items-center p-2">
+            <div className="mb-6 border border-pink-300 rounded-xl border-dashed flex flex-col items-center p-2 w-full">
 
               <label htmlFor="mensaje" className="flex justify-center items-center text-pink-400 text-md font-medium mb-4">
                 <FaEnvelope className="mr-2 text-pink-300" />
                 Buzón de los novios (opcional)
               </label>
 
-              <div className="text-white text-xs mb-4">
-                {invitadoData?.familia}, nos encantaría  leer tus buenos deseos.
+              <div className="text-white text-sm mb-4">
+                {invitadoData?.familia}, <br />
+                nos encantaría  leer tus buenos deseos.
 
               </div>
 
@@ -525,41 +559,59 @@ export default function Asistencia() {
               </div>
             </div>
 
-            <div className="flex justify-center">
-              <motion.button
-                type="submit"
-                disabled={isSubmitting || (formData.asistencia === "si" && (formData.telefono.length !== 10 || formData.miembrosConfirmados.length === 0 || (formData.agregarExtras && (formData.extras.length === 0 || formData.extras.some(extra => extra.nombre.trim() === "")))))}
-                whileTap={{ scale: 0.95 }}
-                className="w-[60%] sm:w-[65%] md:w-[70%] lg:w-[75%] flex justify-center items-center gap-2 h-14 cursor-pointer rounded-md shadow-2xl text-white font-semibold bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] hover:shadow-xl hover:shadow-yellow-400 hover:scale-105 duration-300 backdrop-blur-md border border-white/35 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
-              >
-                {isSubmitting ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                      className="mr-2"
-                    >
-                      <FaHeart className="text-pink-400" />
-                    </motion.div>
-                    Enviando...
-                  </>
-                ) : (
-                  <>
-                    <FaEnvelope className="mr-2 text-yellow-300" /> Enviar respuesta
-                  </>
-                )}
-              </motion.button>
-            </div>
 
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                onClick={() => router.push("/detalles")}
-                className="text-[#ff9eb1] hover:text-[#ff7a93] transition-colors duration-300 flex items-center justify-center"
-              >
-                <FaArrowLeft className="mr-2 text-pink-300" /> Volver a detalles
-              </button>
-            </div>
+
+            <motion.div
+              onClick={() => {
+                if (!isDisabled && !isSubmitting) {
+                  document.getElementById("real-submit-button")?.click();
+                }
+              }}
+              whileTap={{ scale: isDisabled ? 1 : 0.95 }}
+              className={`w-[60%] sm:w-[65%] md:w-[70%] lg:w-[75%] flex justify-center items-center gap-2 h-14 rounded-md shadow-2xl text-white font-semibold 
+      ${isDisabled
+                  ? 'opacity-50 cursor-not-allowed hover:scale-100 hover:shadow-none'
+                  : 'cursor-pointer hover:scale-105 hover:shadow-xl hover:shadow-yellow-400'} 
+      bg-[linear-gradient(to_right,rgba(0,0,0,0.5),rgba(255,215,0,0.4),rgba(0,0,0,0.5))] 
+      hover:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(255,215,0,0.5),rgba(0,0,0,0.6))] 
+      duration-300 backdrop-blur-md border border-white/35`}
+            >
+              {isSubmitting ? (
+                <>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                    className="mr-2"
+                  >
+                    <FaHeart className="text-pink-400" />
+                  </motion.div>
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <FaEnvelope className="mr-2 text-yellow-300" />
+                  Enviar respuesta
+                </>
+              )}
+            </motion.div>
+
+            <button
+              id="real-submit-button"
+              type="submit"
+              className="hidden"
+              disabled={isDisabled}
+            />
+
+
+            <motion.div
+              onClick={() => router.push("/detalles")}
+              className="text-[#ff9eb1] hover:text-[#ff7a93] transition-colors duration-300 flex items-center justify-center mt-4 cursor-pointer"
+            >
+              <FaArrowLeft className="mr-2 text-pink-300" />
+              Volver a detalles
+
+            </motion.div>
+
           </form>
         )}
       </div>

@@ -53,21 +53,48 @@ export default function Asistencia() {
   const [submitted, setSubmitted] = useState(false);
   const [clicked, setClicked] = useState(false);
 
-  // Simular carga de datos de la API
+
   useEffect(() => {
-    // Aquí harías la llamada a tu API real
+ 
     setTimeout(() => {
-      // Datos de ejemplo
-      setInvitadoData({
-        id: "fam123",
-        familia: "Familia Zarazúa Cruz",
-        miembros: [
-          { id: 1, nombre: "Lourdes" },
-          { id: 2, nombre: "Verónica" },
-          { id: 3, nombre: "Mireya" }
-        ],
-        maxExtras: 2
+     
+
+       fetch('https://svcdgjkk16.execute-api.us-east-1.amazonaws.com/invites/getInviteData',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id_invitado: "836d7ee9-f0c3-4789-95f6-aef0f83d3790" }),
+        }
+
+
+       )
+      .then(respuesta => respuesta.json())
+      .then(data => {
+        setInvitadoData({
+        id: data.data.invitado.id,
+        familia: data.data.invitado.nombre,
+        miembros: data.data.invitado.miembros,
+        maxExtras: data.data.invitado.adicionales
       });
+        
+      })
+      .catch(error => {
+        console.error('Error al obtener los datos:', error);
+      });
+
+
+      // setInvitadoData({
+      //   id: "fam123",
+      //   familia: "Familia Zarazúa Cruz",
+      //   miembros: [
+      //     { id: 1, nombre: "Lourdes" },
+      //     { id: 2, nombre: "Verónica" },
+      //     { id: 3, nombre: "Mireya" }
+      //   ],
+      //   maxExtras: 2
+      // });
 
       // Inicializar con checkboxes en blanco
       setFormData(prev => ({

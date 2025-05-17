@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import type {Viewport} from "next";
 import "./globals.css";
+import { InviteProvider } from "./context/InviteContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +23,6 @@ export const viewport: Viewport = {
   themeColor: "black"
 }
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +33,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <InviteProvider>
+          {children}
+        </InviteProvider>
       </body>
     </html>
   );

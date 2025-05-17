@@ -1,16 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { API_CONFIG, getApiUrl } from '../config/api';
-
-// Definir tipos para los datos del invitado
-// interface InvitadoData {
-//   id: string;
-//   familia: string;
-//   miembros: { id: number; nombre: string }[];
-//   maxExtras: number;
-// }
 
 // Definir tipos para los datos del invitado
 interface InvitadoData {
@@ -22,8 +14,6 @@ interface InvitadoData {
   asistir: boolean | null;
   buzon: string | null;
 }
-
-
 
 // Definir el tipo para el contexto
 interface InviteContextType {
@@ -37,13 +27,14 @@ interface InviteContextType {
 // Crear el contexto
 const InviteContext = createContext<InviteContextType | undefined>(undefined);
 
-// Proveedor del contexto
-export function InviteProvider({ children }: { children: ReactNode }) {
-  const [inviteId, setInviteId] = useState<string | null>(null);
-  const [invitadoData, setInvitadoData] = useState<InvitadoData | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  
+// Componente que usa useSearchParams
+function InviteParamsHandler({ 
+  setInviteId, 
+  inviteId 
+}: { 
+  setInviteId: (id: string | null) => void;
+  inviteId: string | null;
+}) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -67,7 +58,17 @@ export function InviteProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('inviteId', newId);
       }
     }
-  }, [pathname, searchParams, inviteId]);
+  }, [pathname, searchParams, inviteId, setInviteId]);
+
+  return null;
+}
+
+// Proveedor del contexto
+export function InviteProvider({ children }: { children: ReactNode }) {
+  const [inviteId, setInviteId] = useState<string | null>(null);
+  const [invitadoData, setInvitadoData] = useState<InvitadoData | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Función para obtener datos del invitado
   const fetchInviteData = async () => {
@@ -99,7 +100,6 @@ export function InviteProvider({ children }: { children: ReactNode }) {
         asistir: data.data.asistira,
         respuesta: data.data.respuesta,
         buzon: data.data.invitado.buzon
-
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
@@ -118,6 +118,9 @@ export function InviteProvider({ children }: { children: ReactNode }) {
 
   return (
     <InviteContext.Provider value={{ inviteId, invitadoData, loading, error, fetchInviteData }}>
+      <Suspense fallback={null}>
+        <InviteParamsHandler setInviteId={setInviteId} inviteId={inviteId} />
+      </Suspense>
       {children}
     </InviteContext.Provider>
   );

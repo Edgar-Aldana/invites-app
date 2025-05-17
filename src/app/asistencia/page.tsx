@@ -9,6 +9,7 @@ import { FaCheckCircle, FaTimesCircle, FaUserPlus, FaWhatsapp, FaEnvelope, FaHea
 import { BsPerson, BsPersonCheck } from "react-icons/bs";
 import { PiWarning } from "react-icons/pi";
 import { CheckCheckIcon, CheckSquare } from "lucide-react";
+import { useInvite } from "../context/InviteContext";
 
 interface FamilyMember {
   id: number;
@@ -20,6 +21,9 @@ interface InvitadoData {
   familia: string;
   miembros: FamilyMember[];
   maxExtras: number;
+  respuesta: boolean;
+  asistir: boolean | null;
+  buzon: string | null;
 }
 
 interface FormData {
@@ -38,6 +42,7 @@ export default function Asistencia() {
   const [loading, setLoading] = useState(true);
   const [telefonoError, setTelefonoError] = useState<string | null>(null);
   const [editingPhone, setEditingPhone] = useState(false);
+  const { inviteId, invitadoData: contextInvitadoData, loading: contextLoading, error } = useInvite();
 
   // Inicializar con asistencia "si"
   const [formData, setFormData] = useState<FormData>({
@@ -55,48 +60,39 @@ export default function Asistencia() {
 
 
   useEffect(() => {
- 
+    if (contextInvitadoData) {
+      setInvitadoData(contextInvitadoData);
+      setLoading(false);
+      return;
+    }
+    
+    // Si no hay datos en el contexto, usa el ID del contexto o el ID hardcodeado
     setTimeout(() => {
-     
-
-       fetch('https://svcdgjkk16.execute-api.us-east-1.amazonaws.com/invites/getInviteData',
+      fetch('https://svcdgjkk16.execute-api.us-east-1.amazonaws.com/invites/getInviteData',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ id_invitado: "836d7ee9-f0c3-4789-95f6-aef0f83d3790" }),
+          body: JSON.stringify({ id_invitado: inviteId || "836d7ee9-f0c3-4789-95f6-aef0f83d3790" }),
         }
-
-
-       )
+      )
       .then(respuesta => respuesta.json())
       .then(data => {
         setInvitadoData({
-        id: data.data.invitado.id,
-        familia: data.data.invitado.nombre,
-        miembros: data.data.invitado.miembros,
-        maxExtras: data.data.invitado.adicionales
-      });
-        
+          id: data.data.invitado.id,
+          familia: data.data.invitado.nombre,
+          miembros: data.data.invitado.miembros,
+          maxExtras: data.data.invitado.adicionales,
+          asistir: data.data.asistira,
+          respuesta: data.data.respuesta,
+          buzon: data.data.invitado.buzon
+        });
       })
       .catch(error => {
         console.error('Error al obtener los datos:', error);
       });
 
-
-      // setInvitadoData({
-      //   id: "fam123",
-      //   familia: "Familia Zarazúa Cruz",
-      //   miembros: [
-      //     { id: 1, nombre: "Lourdes" },
-      //     { id: 2, nombre: "Verónica" },
-      //     { id: 3, nombre: "Mireya" }
-      //   ],
-      //   maxExtras: 2
-      // });
-
-      // Inicializar con checkboxes en blanco
       setFormData(prev => ({
         ...prev,
         miembrosConfirmados: [],
@@ -105,7 +101,8 @@ export default function Asistencia() {
 
       setLoading(false);
     }, 1000);
-  }, []);
+  }, [contextInvitadoData, inviteId]);
+
 
   // Estado para mostrar aviso de selección requerida
   const [showSelectionWarning, setShowSelectionWarning] = useState(true);

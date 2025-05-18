@@ -1,6 +1,6 @@
 
 export const API_CONFIG = {
-  BASE_URL: 'https://svcdgjkk16.execute-api.us-east-1.amazonaws.com',
+  BASE_URL: 'https://invites-app-api.onrender.com',
   ENDPOINTS: {
     GET_INVITE_DATA: '/invites/getInviteData',
   },

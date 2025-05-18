@@ -10,15 +10,6 @@ import { FaMapMarkerAlt, FaChurch, FaUsers, FaArrowLeft, FaArrowRight, FaCheck, 
 import { useInvite } from '../context/InviteContext';
 
 
-// interface InvitadoData {
-//     id: string;
-//     familia: string;
-//     respuesta: boolean;
-//     asistir: boolean | null;
-// }
-
-
-
 
 
 export default function Details() {
@@ -34,24 +25,12 @@ export default function Details() {
     const showItineraryButton = invitadoData?.respuesta === true && invitadoData?.asistir === true;
     const showChangeMindButton = invitadoData?.respuesta === true && invitadoData?.asistir === false && today < deadline;
 
-    console.log(invitadoData);
 
     const handleConfirmacionClick = () => {
         setClicked(true);
         setTimeout(() => router.push("/asistencia"), 600);
     };
 
-
-    // useEffect(() => {
-
-    //     setInvitadoData({
-    //         id: "fam123",
-    //         familia: "Familia Zarazúa Cruz",
-    //         respuesta: false,
-    //         asistir: null
-    //     });
-
-    // }, []);
 
 
     return (

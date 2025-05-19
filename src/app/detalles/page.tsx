@@ -15,15 +15,14 @@ import { useInvite } from '../context/InviteContext';
 export default function Details() {
     const router = useRouter();
     const [clicked, setClicked] = useState(false);
-    //const [invitadoData, setInvitadoData] = useState<InvitadoData | null>(null);
     const { invitadoData, loading, error } = useInvite();
 
     const today = new Date();
     const deadline = new Date("2026-03-21");
 
     const showRespondButton = invitadoData?.respuesta === false && invitadoData?.asistir === null && today < deadline;
-    const showItineraryButton = invitadoData?.respuesta === true && invitadoData?.asistir === true;
-    const showChangeMindButton = invitadoData?.respuesta === true && invitadoData?.asistir === false && today < deadline;
+    const showItineraryButton = invitadoData?.respuesta === true && invitadoData?.asistir && today > deadline;
+    const showChangeMindButton = invitadoData?.respuesta === true && today < deadline;
 
 
     const handleConfirmacionClick = () => {

@@ -3,6 +3,7 @@ export const API_CONFIG = {
   BASE_URL: 'https://invites-app-api.onrender.com',
   ENDPOINTS: {
     GET_INVITE_DATA: '/invites/getInviteData',
+    UPDATE_INVITE_DATA: '/invites/updateInviteData',
   },
   DEFAULT_INVITE_ID: '836d7ee9-f0c3-4789-95f6-aef0f83d3790'
 };

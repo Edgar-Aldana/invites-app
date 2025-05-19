@@ -10,10 +10,12 @@ import { BsPerson, BsPersonCheck } from "react-icons/bs";
 import { PiWarning } from "react-icons/pi";
 import { CheckCheckIcon, CheckSquare } from "lucide-react";
 import { useInvite } from "../context/InviteContext";
+import { API_CONFIG, getApiUrl } from "../config/api";
 
 interface FamilyMember {
   id: number;
   nombre: string;
+  asistira: boolean;
 }
 
 interface InvitadoData {
@@ -36,23 +38,22 @@ interface FormData {
 }
 
 export default function Asistencia() {
+
   const router = useRouter();
-  // Simulación de datos de API - esto se reemplazaría con una llamada real a la API
   const [invitadoData, setInvitadoData] = useState<InvitadoData | null>(null);
   const [loading, setLoading] = useState(true);
   const [telefonoError, setTelefonoError] = useState<string | null>(null);
-  const [editingPhone, setEditingPhone] = useState(false);
   const { inviteId, invitadoData: contextInvitadoData, loading: contextLoading, error } = useInvite();
 
-  // Inicializar con asistencia "si"
-  const [formData, setFormData] = useState<FormData>({
-    telefono: "5512634987",
-    asistencia: "si",
-    miembrosConfirmados: [],
-    agregarExtras: false,
-    extras: [],
-    mensaje: "",
-  });
+  const [formData, setFormData] = useState<FormData>
+    ({
+      telefono: "",
+      asistencia: contextInvitadoData?.asistir ? "si" : "no",
+      miembrosConfirmados: [],
+      agregarExtras: false,
+      extras: [],
+      mensaje: contextInvitadoData?.buzon || "",
+    });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -60,54 +61,85 @@ export default function Asistencia() {
 
 
   useEffect(() => {
-    if (contextInvitadoData) {
-      setInvitadoData(contextInvitadoData);
-      setLoading(false);
+    if (!inviteId || typeof inviteId !== 'string' || inviteId.trim() === '') {
+      console.warn('inviteId no válido. Se cancela fetch.');
       return;
     }
-    
-    // Si no hay datos en el contexto, usa el ID del contexto o el ID hardcodeado
-    setTimeout(() => {
-      fetch('https://svcdgjkk16.execute-api.us-east-1.amazonaws.com/invites/getInviteData',
-        {
+
+    const cargarDatos = async () => {
+      try {
+        if (contextInvitadoData) {
+          // Si ya existe información en contexto, úsala directamente
+          setInvitadoData(contextInvitadoData);
+
+          const miembrosConfirmados = contextInvitadoData.miembros
+            .filter(member => member.asistira)
+            .map(member => member.id);
+
+          setFormData({
+            telefono: contextInvitadoData.telefono,
+            asistencia: contextInvitadoData.asistir ? "si" : "no",
+            miembrosConfirmados,
+            agregarExtras: contextInvitadoData.maxExtras > 0,
+            extras: [],
+            mensaje: contextInvitadoData.buzon || "",
+          });
+
+          return;
+        }
+
+        // Si no hay datos en contexto, consulta a la API
+        const respuesta = await fetch(getApiUrl(API_CONFIG.ENDPOINTS.GET_INVITE_DATA), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ id_invitado: inviteId || "836d7ee9-f0c3-4789-95f6-aef0f83d3790" }),
+          body: JSON.stringify({ id_invitado: inviteId }),
+        });
+
+        if (!respuesta.ok) {
+          console.error('Error al obtener datos:', respuesta.status, await respuesta.text());
+          return;
         }
-      )
-      .then(respuesta => respuesta.json())
-      .then(data => {
+
+        const data = await respuesta.json();
+        const invitado = data.data.invitado;
+
         setInvitadoData({
-          id: data.data.invitado.id,
-          familia: data.data.invitado.nombre,
-          miembros: data.data.invitado.miembros,
-          maxExtras: data.data.invitado.adicionales,
+          id: data.data.id_invitado,
+          familia: invitado.nombre,
+          miembros: invitado.miembros,
+          maxExtras: invitado.adicionales,
           asistir: data.data.asistira,
           respuesta: data.data.respuesta,
-          buzon: data.data.invitado.buzon
+          buzon: data.data.buzon,
         });
-      })
-      .catch(error => {
-        console.error('Error al obtener los datos:', error);
-      });
 
-      setFormData(prev => ({
-        ...prev,
-        miembrosConfirmados: [],
-        asistencia: "si"
-      }));
+        const miembrosConfirmados = invitadoData ? invitadoData.miembros.filter(member => member.asistira).map(member => member.id) : [];
 
-      setLoading(false);
-    }, 1000);
+        setFormData({
+          telefono: invitado.telefono,
+          asistencia: data.data.asistira ? "si" : "no",
+          miembrosConfirmados: miembrosConfirmados,
+          agregarExtras: Boolean(invitado.adicionales),
+          extras: [],
+          mensaje: data.data.buzon,
+        });
+      } catch (error) {
+        console.error('Error al cargar datos del invitado:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+
+    setTimeout(cargarDatos, 500);
   }, [contextInvitadoData, inviteId]);
 
 
-  // Estado para mostrar aviso de selección requerida
-  const [showSelectionWarning, setShowSelectionWarning] = useState(true);
 
-  // Manejar cambios en los checkboxes de miembros de familia
+
+  const [showSelectionWarning, setShowSelectionWarning] = useState(true);
   const handleMemberChange = (id: number, checked: boolean) => {
     setFormData(prev => {
       const newMiembrosConfirmados = checked
@@ -128,7 +160,7 @@ export default function Asistencia() {
     });
   };
 
-  // Manejar cambios en los inputs de texto y radio buttons
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
 
@@ -136,13 +168,11 @@ export default function Asistencia() {
       const target = e.target as HTMLInputElement;
       const newValue = target.value as "si" | "no";
 
-      // Si cambia a "no", limpiar errores de teléfono
       if (newValue === "no") {
         setTelefonoError(null);
         setShowSelectionWarning(false);
       }
 
-      // Si cambia a "si" y no hay miembros confirmados, mostrar aviso
       if (newValue === "si" && formData.miembrosConfirmados.length === 0) {
         setShowSelectionWarning(true);
       }
@@ -230,7 +260,6 @@ export default function Asistencia() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validar el formulario antes de enviar
     if (!validateForm()) {
       return;
     }
@@ -238,18 +267,45 @@ export default function Asistencia() {
     setIsSubmitting(true);
     setClicked(true);
 
-    // Aquí enviarías los datos a tu backend
-    console.log("Datos a enviar:", {
-      invitadoId: invitadoData?.id,
-      ...formData
-    });
+    const payload = {
+      invitadoId: inviteId,
+      ...formData,
+    };
+
+    console.log("Datos a enviar:", payload);
 
 
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const response = await fetch(getApiUrl(API_CONFIG.ENDPOINTS.UPDATE_INVITE_DATA), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error en la respuesta del servidor:', response.status, errorText);
+        return;
+      }
+
+      const result = await response.json();
+      console.log('Respuesta del servidor:', result);
       setSubmitted(true);
 
-    }, 1500);
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+
+
+    // setTimeout(() => {
+    //   setIsSubmitting(false);
+    //   setSubmitted(true);
+
+    // }, 1500);
   };
 
 
@@ -401,23 +457,23 @@ export default function Asistencia() {
 
                       <div className="flex justify-center items-center text-white mb-4 italic w-full">
                         <BsPersonCheck className="mr-2 text-blue-300 text-xl" />
-                         Invitados
+                        Invitados
                       </div>
 
                       <div className="text-blue-300 text-sm mb-2 flex gap-3 flex-col justify-center items-center w-full">
-                          
-                          <h4 className="w-[90%]">
-                            Para confirmar asistencia, presiona sobre el recuadro blanco de cada invitado.
-                          </h4>
 
-                          <CheckSquare className="w-4 h-4 text-white"/>
-                          
+                        <h4 className="w-[90%]">
+                          Para confirmar asistencia, presiona sobre el recuadro blanco de cada invitado.
+                        </h4>
+
+                        <CheckSquare className="w-4 h-4 text-white" />
+
                       </div>
 
-                       
+
 
                       {showSelectionWarning && (
-                     
+
                         <span className="text-red-600 text-sm font-[oswaldFont] bg-yellow-300 rounded-md p-1 flex items-center justify-cente mb-2">
                           Es necesario seleccionar al menos un invitado
                         </span>

@@ -8,11 +8,12 @@ import { API_CONFIG, getApiUrl } from '../config/api';
 interface InvitadoData {
   id: string;
   familia: string;
-  miembros: { id: number; nombre: string }[];
+  miembros: { id: number; nombre: string; asistira: boolean }[];
   maxExtras: number;
   respuesta: boolean;
   asistir: boolean | null;
   buzon: string | null;
+  telefono: string;
 }
 
 // Definir el tipo para el contexto
@@ -40,20 +41,15 @@ function InviteParamsHandler({
 
   // Extraer el ID de la URL
   useEffect(() => {
-    // Método 1: Extraer de parámetros de ruta (para rutas como /ticket/[id])
+    
     const pathSegments = pathname.split('/');
     const idFromPath = pathSegments.length > 2 && pathSegments[1] === 'ticket' ? pathSegments[2] : null;
-    
-    // Método 2: Extraer de query params (para rutas como ?id=uuid)
     const idFromQuery = searchParams?.get('id');
-    
-    // Priorizar el ID de la ruta, luego el de query, luego intentar obtener del localStorage
     const storedId = typeof window !== 'undefined' ? localStorage.getItem('inviteId') : null;
     const newId = idFromPath || idFromQuery || storedId;
     
     if (newId && newId !== inviteId) {
       setInviteId(newId);
-      // Guardar en localStorage para persistencia
       if (typeof window !== 'undefined') {
         localStorage.setItem('inviteId', newId);
       }
@@ -63,14 +59,14 @@ function InviteParamsHandler({
   return null;
 }
 
-// Proveedor del contexto
+
 export function InviteProvider({ children }: { children: ReactNode }) {
   const [inviteId, setInviteId] = useState<string | null>(null);
   const [invitadoData, setInvitadoData] = useState<InvitadoData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Función para obtener datos del invitado
+
   const fetchInviteData = async () => {
     if (!inviteId) return;
     
@@ -99,7 +95,8 @@ export function InviteProvider({ children }: { children: ReactNode }) {
         maxExtras: data.data.invitado.adicionales,
         asistir: data.data.asistira,
         respuesta: data.data.respuesta,
-        buzon: data.data.invitado.buzon
+        buzon: data.data.buzon,
+        telefono: data.data.invitado.telefono
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
@@ -109,7 +106,6 @@ export function InviteProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Cargar datos automáticamente cuando cambia el ID
   useEffect(() => {
     if (inviteId) {
       fetchInviteData();
@@ -126,7 +122,6 @@ export function InviteProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Hook personalizado para usar el contexto
 export function useInvite() {
   const context = useContext(InviteContext);
   if (context === undefined) {

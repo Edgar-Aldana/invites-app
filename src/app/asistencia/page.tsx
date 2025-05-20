@@ -78,10 +78,10 @@ export default function Asistencia() {
 
           setFormData({
             telefono: contextInvitadoData.telefono,
-            asistencia: contextInvitadoData.asistir ? "si" : "no",
+            asistencia: contextInvitadoData.asistir || contextInvitadoData.asistir === null  ? "si" : "no",
             miembrosConfirmados,
-            agregarExtras: contextInvitadoData.maxExtras > 0,
-            extras: [],
+            agregarExtras: Boolean(contextInvitadoData.invitadosAdicionales.length),
+            extras: contextInvitadoData.invitadosAdicionales,
             mensaje: contextInvitadoData.buzon || "",
           });
 
@@ -119,10 +119,10 @@ export default function Asistencia() {
 
         setFormData({
           telefono: invitado.telefono,
-          asistencia: data.data.asistira ? "si" : "no",
+          asistencia: data.data.asistira || data.data.asistira === null ? "si" : "no",
           miembrosConfirmados: miembrosConfirmados,
-          agregarExtras: Boolean(invitado.adicionales),
-          extras: [],
+          agregarExtras: Boolean(invitado.extras.length),
+          extras: invitado.extras,
           mensaje: data.data.buzon,
         });
       } catch (error) {
@@ -139,7 +139,7 @@ export default function Asistencia() {
 
 
 
-  const [showSelectionWarning, setShowSelectionWarning] = useState(true);
+  const [showSelectionWarning, setShowSelectionWarning] = useState(Boolean(formData.miembrosConfirmados.length));
   const handleMemberChange = (id: number, checked: boolean) => {
     setFormData(prev => {
       const newMiembrosConfirmados = checked

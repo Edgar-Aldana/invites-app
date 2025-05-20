@@ -10,6 +10,7 @@ interface InvitadoData {
   familia: string;
   miembros: { id: number; nombre: string; asistira: boolean }[];
   maxExtras: number;
+  invitadosAdicionales: { id: number; nombre: string }[];
   respuesta: boolean;
   asistir: boolean | null;
   buzon: string | null;
@@ -93,6 +94,7 @@ export function InviteProvider({ children }: { children: ReactNode }) {
         familia: data.data.invitado.nombre,
         miembros: data.data.invitado.miembros,
         maxExtras: data.data.invitado.adicionales,
+        invitadosAdicionales: data.data.invitado.extras,
         asistir: data.data.asistira,
         respuesta: data.data.respuesta,
         buzon: data.data.buzon,

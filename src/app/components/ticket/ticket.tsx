@@ -44,7 +44,7 @@ export default function TicketCard({ mesa, familia, integrantes }: TicketCardPro
 
         <div className="flex flex-col w-full text-[50px] text-center sm:text-[55px] lg:text-[60px] text-white font-['weddingScriptFont']">
           <span> A y E</span>
-          <span className="font-['brillantFont'] text-[22px] font-semibold text-[#bbdb93]"> <br />26/09/2026</span>
+          <span className="font-['brillantFont'] text-[22px] font-semibold text-[#bbdb93] mb-8"> <br />26/09/2026</span>
 
 
           <img
@@ -92,7 +92,6 @@ export default function TicketCard({ mesa, familia, integrantes }: TicketCardPro
         <div className="flex flex-col justify-center items-center text-white font-['forumFont'] text-[32px] lg:text-[42px]">
 
           <div className="flex flex-col gap-2 text-[26px] lg:text-[36px] font-semibold text-center font-medium">
-            <span className="text-white font-semibold text-[28px]">Familia: </span>
             <span className="text-[42px] drop-shadow-xl drop-shadow-orange-400 font-['weddingStarlightFont']">{familia}</span>
           </div>
 

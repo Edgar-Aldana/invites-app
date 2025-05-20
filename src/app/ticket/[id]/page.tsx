@@ -1,16 +1,44 @@
+'use client';
+
+import { useInvite } from "../../context/InviteContext";
 import TicketCard from "../../components/ticket/ticket";
+import { useEffect, useState } from "react";
+import Loading from "@/app/loading";
+import NotFound from "@/app/not-found";
+
+export default function TicketPage() {
+  const { invitadoData, loading, error } = useInvite();
+  const [showTicket, setShowTicket] = useState(false);
+
+  useEffect(() => {
+    if (invitadoData && !loading) {
+      setShowTicket(true);
+    }
+
+  }, [invitadoData, loading]);
+
+  if (loading) {
+    return Loading();
+  }
+
+  if (error) {
+    return <NotFound />;
+  }
+
+  if (!invitadoData || !showTicket) {
+    return <NotFound />;
+  }
 
 
-export default async function TicketPage(params: { params: Promise<{ id: string }>;})
-{
-  
-  const id   = (await params.params).id;
+  const miembrosConfirmados = invitadoData.miembros.filter(member => member.asistira).map(member => member.id).length;
+  const extras = invitadoData.invitadosAdicionales.length;
+  const asistentes = miembrosConfirmados + extras;
 
   const data = {
-    id: id,
+    id: invitadoData.id,
     mesa: "Pendiente",
-    familia: "Zarazúa Cruz",
-    integrantes: 3,
+    familia: invitadoData.familia,
+    integrantes: asistentes,
   };
 
   return (
@@ -19,5 +47,3 @@ export default async function TicketPage(params: { params: Promise<{ id: string 
     </div>
   );
 }
-
-export const dynamic = "force-dynamic";

@@ -7,15 +7,17 @@ import { useRouter } from 'next/navigation'
 import { WeddingTimeline } from '../components/timeline/timeline';
 import { BackgroundDetails } from '../components/backgroundDetails/backgroundDetails';
 import { Loader } from '../components/loader/loader';
+import {useInvite} from '../context/InviteContext';
 
 export default function Itinerary() {
   const [isGenerating, setIsGenerating] = useState(false);
   const router = useRouter();
+  const { invitadoData } = useInvite();
 
   const handleConfirmacionClick = () => {
     setIsGenerating(true);
     setTimeout(() => {
-      router.push("/ticket/563510c2-bae8-44e5-8d3e-77604e5801f6");
+      router.push(`/ticket/${invitadoData?.id}`);
     }, 1500);
   };
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import type {Viewport} from "next";
+import type { Viewport } from "next";
 import "./globals.css";
 import { InviteProvider } from "./context/InviteContext";
 import { AdminProvider } from "./context/adminContext";
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "black"
+  themeColor: "#ce4676"
 }
 
 export default function RootLayout({
@@ -31,12 +31,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es-Mx">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com"/>
+        <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet" />
+      </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      > 
+      >
 
         <AdminProvider>
-          
+
           <InviteProvider>
             {children}
           </InviteProvider>

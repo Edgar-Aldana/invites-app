@@ -30,7 +30,7 @@ export const Hero = () => {
                 </div>
 
 
-                <div className="text-xl sm:text-2xl md:text-3xl font-['forumFont'] text-green-700">
+                <div className="text-xl sm:text-2xl md:text-3xl font-['forumFont'] text-green-800">
                     Nuestra boda
                 </div>
 

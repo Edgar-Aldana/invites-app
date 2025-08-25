@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export const Loader = () => {
     return (
-        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+        <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">
             <motion.img
                 src="/media/images/sunflower-loading.png"
                 alt="Cargando..."
